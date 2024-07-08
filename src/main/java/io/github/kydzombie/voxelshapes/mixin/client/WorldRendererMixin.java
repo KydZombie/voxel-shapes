@@ -1,4 +1,4 @@
-package io.github.kydzombie.voxelshapes.mixin;
+package io.github.kydzombie.voxelshapes.mixin.client;
 
 import io.github.kydzombie.voxelshapes.Line;
 import io.github.kydzombie.voxelshapes.api.HasVoxelShape;
@@ -38,9 +38,9 @@ public abstract class WorldRendererMixin {
             int var7 = world.getBlockId(hitResult.blockX, hitResult.blockY, hitResult.blockZ);
             if (var7 > 0) {
                 Block.BLOCKS[var7].updateBoundingBox(this.world, hitResult.blockX, hitResult.blockY, hitResult.blockZ);
-                double var8 = playerEntity.field_1637 + (playerEntity.x - playerEntity.field_1637) * (double)f;
-                double var10 = playerEntity.field_1638 + (playerEntity.y - playerEntity.field_1638) * (double)f;
-                double var12 = playerEntity.field_1639 + (playerEntity.z - playerEntity.field_1639) * (double)f;
+                double var8 = playerEntity.lastTickX + (playerEntity.x - playerEntity.lastTickX) * (double)f;
+                double var10 = playerEntity.lastTickY + (playerEntity.y - playerEntity.lastTickY) * (double)f;
+                double var12 = playerEntity.lastTickZ + (playerEntity.z - playerEntity.lastTickZ) * (double)f;
 
                 Vec3d center = new Vec3d(hitResult.blockX + 0.5, hitResult.blockY + 0.5, hitResult.blockZ + 0.5);
                 List<Line> linePoints = convertBoxesToLines(block.getVoxelShape(world, hitResult.blockX, hitResult.blockY, hitResult.blockZ), center);

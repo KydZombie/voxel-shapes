@@ -9,9 +9,10 @@
     "StairMixin"
   ],
   "server": [
+    "server.ServerPlayNetworkHandlerMixin"
   ],
   "client": [
-    "WorldRendererMixin"
+    "client.WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
