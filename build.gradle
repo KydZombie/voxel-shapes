@@ -98,7 +98,12 @@ dependencies {
 		transitive false
 	}
 
+	modRuntimeOnly "com.github.GeyserMC:MCAuthLib:d9d773e5d50327c33898c65cd545a4f6ef3ba1b5" // needed for mojang fix
 	modRuntimeOnly ("maven.modrinth:gambac:${gambac_version}") { transitive false }
+	modRuntimeOnly ("maven.modrinth:mojangfix-stationapi-edition:${mojang_fix_stapi_version}") { transitive false }
+	modRuntimeOnly ("maven.modrinth:thirdpersonfix-babric:${thirdpersonfix_version}") { transitive false }
+	modRuntimeOnly("com.github.matthewperiut:spc-babric:${spc_version}") { transitive false }
+	modRuntimeOnly ("com.github.matthewperiut:stapi-fast-intro:17a7ed0dc4") { transitive false }
 }
 
 processResources {

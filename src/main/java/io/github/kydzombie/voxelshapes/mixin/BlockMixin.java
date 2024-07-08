@@ -1,5 +1,6 @@
 package io.github.kydzombie.voxelshapes.mixin;
 
+import io.github.kydzombie.voxelshapes.api.HasCollisionVoxelShape;
 import io.github.kydzombie.voxelshapes.api.HasVoxelShape;
 import net.minecraft.block.Block;
 import net.minecraft.util.hit.HitResult;
@@ -19,7 +20,10 @@ import java.util.Arrays;
 public class BlockMixin {
     @Inject(method = "addIntersectingBoundingBox(Lnet/minecraft/world/World;IIILnet/minecraft/util/math/Box;Ljava/util/ArrayList;)V", at = @At("HEAD"), cancellable = true)
     private void addVoxelShapesToCollision(World world, int x, int y, int z, Box box, ArrayList<Box> boxes, CallbackInfo ci) {
-        if (this instanceof HasVoxelShape hasVoxelShape) {
+        if (this instanceof HasCollisionVoxelShape hasCollisionVoxelShape) {
+            boxes.addAll(Arrays.asList(hasCollisionVoxelShape.getCollisionVoxelShape(world, x, y, z)));
+            ci.cancel();
+        } else if (this instanceof HasVoxelShape hasVoxelShape) {
             boxes.addAll(Arrays.asList(hasVoxelShape.getVoxelShape(world, x, y, z)));
             ci.cancel();
         }
