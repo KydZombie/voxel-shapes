@@ -1,14 +1,16 @@
 package io.github.kydzombie.voxelshapes.mixin;
 
+import io.github.kydzombie.voxelshapes.Line;
 import io.github.kydzombie.voxelshapes.api.HasVoxelShape;
 import net.minecraft.block.Block;
+import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.hit.HitResultType;
-import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,11 +18,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.List;
+
+import static io.github.kydzombie.voxelshapes.BoxToLinesConverter.convertBoxesToLines;
+
 @Mixin(WorldRenderer.class)
 public abstract class WorldRendererMixin {
     @Shadow private World world;
-
-    @Shadow protected abstract void method_1545(Box box);
 
     @Inject(method = "method_1554(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/hit/HitResult;ILnet/minecraft/item/ItemStack;F)V", at = @At("HEAD"), cancellable = true)
     private void drawVoxelShapes(PlayerEntity playerEntity, HitResult hitResult, int i, ItemStack itemStack, float f, CallbackInfo ci) {
@@ -31,17 +35,23 @@ public abstract class WorldRendererMixin {
             GL11.glLineWidth(2.0F);
             GL11.glDisable(3553);
             GL11.glDepthMask(false);
-            float var6 = 0.002F;
             int var7 = world.getBlockId(hitResult.blockX, hitResult.blockY, hitResult.blockZ);
             if (var7 > 0) {
                 Block.BLOCKS[var7].updateBoundingBox(this.world, hitResult.blockX, hitResult.blockY, hitResult.blockZ);
                 double var8 = playerEntity.field_1637 + (playerEntity.x - playerEntity.field_1637) * (double)f;
                 double var10 = playerEntity.field_1638 + (playerEntity.y - playerEntity.field_1638) * (double)f;
                 double var12 = playerEntity.field_1639 + (playerEntity.z - playerEntity.field_1639) * (double)f;
-                for (Box box : block.getVoxelShape(world, hitResult.blockX, hitResult.blockY, hitResult.blockZ)) {
-                    // TODO: Combine into non-overlapping shapes before rendering
-                    method_1545(box.expand(var6, var6, var6).offset(-var8, -var10, -var12));
+
+                Vec3d center = new Vec3d(hitResult.blockX + 0.5, hitResult.blockY + 0.5, hitResult.blockZ + 0.5);
+                List<Line> linePoints = convertBoxesToLines(block.getVoxelShape(world, hitResult.blockX, hitResult.blockY, hitResult.blockZ), center);
+
+                Tessellator tessellator = Tessellator.INSTANCE;
+                tessellator.start(1);
+                for (Line linePoint : linePoints) {
+                    tessellator.vertex(-var8 + linePoint.points[0].x, -var10 + linePoint.points[0].y, -var12 + linePoint.points[0].z);
+                    tessellator.vertex(-var8 + linePoint.points[1].x, -var10 + linePoint.points[1].y, -var12 + linePoint.points[1].z);
                 }
+                tessellator.draw();
             }
 
             GL11.glDepthMask(true);
