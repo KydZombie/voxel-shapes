@@ -8,6 +8,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -19,7 +20,7 @@ import java.util.Arrays;
 @Mixin(Block.class)
 public class BlockMixin {
     @Inject(method = "addIntersectingBoundingBox(Lnet/minecraft/world/World;IIILnet/minecraft/util/math/Box;Ljava/util/ArrayList;)V", at = @At("HEAD"), cancellable = true)
-    private void addVoxelShapesToCollision(World world, int x, int y, int z, Box box, ArrayList<Box> boxes, CallbackInfo ci) {
+    private void voxelshapes_addVoxelShapesToCollision(World world, int x, int y, int z, Box box, ArrayList<Box> boxes, CallbackInfo ci) {
         if (this instanceof HasCollisionVoxelShape hasCollisionVoxelShape) {
             boxes.addAll(Arrays.asList(hasCollisionVoxelShape.getCollisionVoxelShape(world, x, y, z)));
             ci.cancel();
@@ -30,7 +31,7 @@ public class BlockMixin {
     }
 
     @Inject(method = "raycast(Lnet/minecraft/world/World;IIILnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/hit/HitResult;", at = @At("HEAD"), cancellable = true)
-    private void allowMineThroughBlock(World world, int x, int y, int z, Vec3d startPos, Vec3d endPos, CallbackInfoReturnable<HitResult> cir) {
+    private void voxelshapes_allowMineThroughBlock(World world, int x, int y, int z, Vec3d startPos, Vec3d endPos, CallbackInfoReturnable<HitResult> cir) {
         if (this instanceof HasVoxelShape hasVoxelShape) {
             startPos = startPos.add(-x, -y, -z);
             endPos = endPos.add(-x, -y, -z);
@@ -43,12 +44,12 @@ public class BlockMixin {
                 Vec3d eastVec = startPos.interpolateByZ(endPos, box.minZ);
                 Vec3d westVec = startPos.interpolateByZ(endPos, box.maxZ);
 
-                if (!containsInYZPlane(box, northVec)) northVec = null;
-                if (!containsInYZPlane(box, southVec)) southVec = null;
-                if (!containsInXZPlane(box, downVec)) downVec = null;
-                if (!containsInXZPlane(box, upVec)) upVec = null;
-                if (!containsInXYPlane(box, eastVec)) eastVec = null;
-                if (!containsInXYPlane(box, westVec)) westVec = null;
+                if (!voxelshapes_containsInYZPlane(box, northVec)) northVec = null;
+                if (!voxelshapes_containsInYZPlane(box, southVec)) southVec = null;
+                if (!voxelshapes_containsInXZPlane(box, downVec)) downVec = null;
+                if (!voxelshapes_containsInXZPlane(box, upVec)) upVec = null;
+                if (!voxelshapes_containsInXYPlane(box, eastVec)) eastVec = null;
+                if (!voxelshapes_containsInXYPlane(box, westVec)) westVec = null;
 
 
                 Vec3d hitPos = null;
@@ -93,7 +94,8 @@ public class BlockMixin {
         }
     }
 
-    private boolean containsInYZPlane(Box box, Vec3d vec3d) {
+    @Unique
+    private boolean voxelshapes_containsInYZPlane(Box box, Vec3d vec3d) {
         if (vec3d == null) {
             return false;
         } else {
@@ -101,7 +103,8 @@ public class BlockMixin {
         }
     }
 
-    private boolean containsInXZPlane(Box box, Vec3d vec3d) {
+    @Unique
+    private boolean voxelshapes_containsInXZPlane(Box box, Vec3d vec3d) {
         if (vec3d == null) {
             return false;
         } else {
@@ -109,7 +112,8 @@ public class BlockMixin {
         }
     }
 
-    private boolean containsInXYPlane(Box box, Vec3d vec3d) {
+    @Unique
+    private boolean voxelshapes_containsInXYPlane(Box box, Vec3d vec3d) {
         if (vec3d == null) {
             return false;
         } else {

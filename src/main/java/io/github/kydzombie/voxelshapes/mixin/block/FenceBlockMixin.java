@@ -1,4 +1,4 @@
-package io.github.kydzombie.voxelshapes.mixin;
+package io.github.kydzombie.voxelshapes.mixin.block;
 
 import io.github.kydzombie.voxelshapes.api.HasCollisionVoxelShape;
 import io.github.kydzombie.voxelshapes.api.HasVoxelShape;
@@ -8,8 +8,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-
-import java.util.ArrayList;
 
 @Mixin(FenceBlock.class)
 abstract class FenceBlockMixin extends Block implements HasVoxelShape, HasCollisionVoxelShape {

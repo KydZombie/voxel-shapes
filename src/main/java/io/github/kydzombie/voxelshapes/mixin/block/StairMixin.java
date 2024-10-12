@@ -1,4 +1,4 @@
-package io.github.kydzombie.voxelshapes.mixin;
+package io.github.kydzombie.voxelshapes.mixin.block;
 
 import io.github.kydzombie.voxelshapes.api.HasVoxelShape;
 import net.minecraft.block.StairsBlock;

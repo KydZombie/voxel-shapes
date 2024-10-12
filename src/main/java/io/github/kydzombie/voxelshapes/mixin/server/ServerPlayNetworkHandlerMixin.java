@@ -21,7 +21,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
     @Shadow private MinecraftServer server;
 
     @Redirect(method = "onPlayerMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;teleport(DDDFF)V", ordinal = 0))
-    private void stationapi_verifyBlockIntersectionForBlockVoxelShapes(ServerPlayNetworkHandler instance, double e, double f, double g, float h, float v) {
+    private void voxelshapes_verifyBlockIntersectionForBlockVoxelShapes(ServerPlayNetworkHandler instance, double e, double f, double g, float h, float v) {
         ServerWorld world = this.server.getWorld(this.player.dimensionId);
         Box originalPlayerBox = player.boundingBox;
         Box playerBox = Box.createCached(originalPlayerBox.minX, originalPlayerBox.minY, originalPlayerBox.minZ,

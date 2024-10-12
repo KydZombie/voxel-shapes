@@ -5,8 +5,8 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BlockMixin",
-    "FenceBlockMixin",
-    "StairMixin"
+    "block.FenceBlockMixin",
+    "block.StairMixin"
   ],
   "server": [
     "server.ServerPlayNetworkHandlerMixin"
