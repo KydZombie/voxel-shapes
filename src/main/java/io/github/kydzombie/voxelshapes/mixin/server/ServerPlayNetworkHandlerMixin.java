@@ -39,9 +39,9 @@ public abstract class ServerPlayNetworkHandlerMixin {
                     Box[] boxes;
 
                     if (block instanceof HasVoxelShape hasVoxelShape) {
-                        boxes = hasVoxelShape.getVoxelShape(world, x, y, z);
+                        boxes = hasVoxelShape.getVoxelShape(world, x, y, z).getOffsetBoxes();
                     } else if (block instanceof HasCollisionVoxelShape hasCollisionVoxelShape) {
-                        boxes = hasCollisionVoxelShape.getCollisionVoxelShape(world, x, y, z);
+                        boxes = hasCollisionVoxelShape.getCollisionVoxelShape(world, x, y, z).getOffsetBoxes();
                     } else {
                         boxes = new Box[]{block.getCollisionShape(world, x, y, z)};
                     }

@@ -2,6 +2,7 @@ package io.github.kydzombie.voxelshapes.mixin;
 
 import io.github.kydzombie.voxelshapes.api.HasCollisionVoxelShape;
 import io.github.kydzombie.voxelshapes.api.HasVoxelShape;
+import io.github.kydzombie.voxelshapes.api.VoxelShape;
 import net.minecraft.block.Block;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
@@ -22,10 +23,12 @@ public class BlockMixin {
     @Inject(method = "addIntersectingBoundingBox(Lnet/minecraft/world/World;IIILnet/minecraft/util/math/Box;Ljava/util/ArrayList;)V", at = @At("HEAD"), cancellable = true)
     private void voxelshapes_addVoxelShapesToCollision(World world, int x, int y, int z, Box box, ArrayList<Box> boxes, CallbackInfo ci) {
         if (this instanceof HasCollisionVoxelShape hasCollisionVoxelShape) {
-            boxes.addAll(Arrays.asList(hasCollisionVoxelShape.getCollisionVoxelShape(world, x, y, z)));
+            VoxelShape collisionVoxelShape = hasCollisionVoxelShape.getCollisionVoxelShape(world, x, y, z);
+            if (collisionVoxelShape != null) boxes.addAll(Arrays.asList(collisionVoxelShape.getOffsetBoxes()));
             ci.cancel();
         } else if (this instanceof HasVoxelShape hasVoxelShape) {
-            boxes.addAll(Arrays.asList(hasVoxelShape.getVoxelShape(world, x, y, z)));
+            VoxelShape voxelShape = hasVoxelShape.getVoxelShape(world, x, y, z);
+            if (voxelShape != null) boxes.addAll(Arrays.asList(voxelShape.getOffsetBoxes()));
             ci.cancel();
         }
     }
@@ -35,8 +38,9 @@ public class BlockMixin {
         if (this instanceof HasVoxelShape hasVoxelShape) {
             startPos = startPos.add(-x, -y, -z);
             endPos = endPos.add(-x, -y, -z);
-            for (Box translatedBox : hasVoxelShape.getVoxelShape(world, x, y, z)) {
-                Box box = translatedBox.translate(-x, -y, -z);
+            VoxelShape voxelShape = hasVoxelShape.getVoxelShape(world, x, y, z);
+            if (voxelShape == null) return;
+            for (Box box : voxelShape.getBoxes()) {
                 Vec3d northVec = startPos.interpolateByX(endPos, box.minX);
                 Vec3d southVec = startPos.interpolateByX(endPos, box.maxX);
                 Vec3d downVec = startPos.interpolateByY(endPos, box.minY);
