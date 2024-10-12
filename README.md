@@ -9,7 +9,14 @@ Fixes stairs and fences collision shape to go to individual smaller boxes rather
 
 You can utilize this mod in your mod by giving your blocks multiple boxes!  
 `HasVoxelShape` will automatically affect collision, if you want a different collision also implement `HasCollisionVoxelShape`.  
-You can also implement `HasCollisionVoxelShape` by itself, to only give collision multiple boxes.
+You can also implement `HasCollisionVoxelShape` by itself, to only give collision multiple boxes.  
+
+Include in your build.gradle
+```
+dependencies {
+    implementation 'com.github.KydZombie:voxel-shapes:${project.voxelshapes_version}'
+}
+```
 
 ```java
 class ExampleBlock extends Block implements HasVoxelShape, HasCollisionVoxelShape {
