@@ -1,26 +1,36 @@
-# Fabric Example Mod with StationAPI and BIN Mappings for beta 1.7.3 server + client
+# VoxelShapes for Beta 1.7.3
+Fully adds the ability to have multiple outline/collision shapes in one block! Completely compatible with server and client, and modifies Vanilla blocks.
 
-## Setup
+# Base Feature
+Fixes stairs and fences collision shape to go to individual smaller boxes rather than the whole block taking up the space.
+![Demo Image](https://i.imgur.com/yCJNseu.png)
 
-[See the StationAPI wiki.](https://github.com/ModificationStation/StationAPI/wiki)
+# API
 
-## Common Issues
+You can utilize this mod in your mod by giving your blocks multiple boxes!  
+`HasVoxelShape` will automatically affect collision, if you want a different collision also implement `HasCollisionVoxelShape`.  
+You can also implement `HasCollisionVoxelShape` by itself, to only give collision multiple boxes.
 
-**My project isn't building after updating babric loom/stationapi!**  
-Run a gradle task with `--refresh-dependencies` as an argument, and this should be fixed. If not, try deleting your project's `.gradle` folder, and try again.
+```java
+class ExampleBlock extends Block implements HasVoxelShape, HasCollisionVoxelShape {
+    public FenceBlockMixin(int id, Material material) {
+        super(id, material);
+    }
 
-**I get "Invalid source release: 17" as an error!**  
-Use Java 17. Open up `File > Project Structure` and change your SDK to Java 17.  
-If you still get the issue, you may need to go into `File > Settings > Build, Execution, Deployment > Build Tools > Gradle` and change the Java that Gradle uses too.
+    @Override
+    public Box[] getVoxelShape(World world, int x, int y, int z) {
+        // Create one orientation of the stair
+        // You could check the blockstate/meta here with world to chnage based off the block
+        // Demo of a block made of two vertical half slabs
+        Box[] boxes = new Box[2];
+        boxes[0] = Box.create(x, y, z, x + 0.5F, y + 1.F, z + 1.F);
+        boxes[1] = Box.create(x + 0.5F, y, z, x + 1.F, y + 1.F, z + 1.F);
+        return boxes;
+    }
 
-**How do I stop server.properties from constantly changing?**  
-Remove the last line in the `gitignore` file.
-
-**My client hangs on a blank screen on trying to my test server!**  
-Open your `server.properties` and set `online-mode` to `false`.
-
-[Here for more issues.](https://github.com/calmilamsy/BIN-fabric-example-mod#common-issues)
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+    public Box[] getCollisionVoxelShape(World world, int x, int y, int z) {
+        // Example of giving this block no collision
+        return new Box[0];
+    }
+}
+```
