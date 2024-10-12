@@ -4,9 +4,10 @@
   "version": "${version}",
 
   "name": "Voxel Shapes",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "Adds the ability to give blocks multiple voxels for collision and related things",
   "authors": [
-    "Me!"
+    "Slainlight",
+    "KydZombie"
   ],
   "contact": {
     "homepage": "https://glass-launcher.net/",

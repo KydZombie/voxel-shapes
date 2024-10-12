@@ -26,7 +26,7 @@ import static io.github.kydzombie.voxelshapes.BoxToLinesConverter.convertBoxesTo
 public abstract class WorldRendererMixin {
     @Shadow private World world;
 
-    @Inject(method = "method_1554(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/hit/HitResult;ILnet/minecraft/item/ItemStack;F)V", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "renderBlockOutline", at = @At("HEAD"), cancellable = true)
     private void drawVoxelShapes(PlayerEntity playerEntity, HitResult hitResult, int i, ItemStack itemStack, float f, CallbackInfo ci) {
         if (i == 0 && hitResult.type == HitResultType.BLOCK && world.getBlockState(hitResult.blockX, hitResult.blockY, hitResult.blockZ).getBlock() instanceof HasVoxelShape block) {
             GL11.glEnable(3042);
