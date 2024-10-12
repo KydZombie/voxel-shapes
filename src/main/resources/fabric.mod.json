@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Voxel Shapes",
-  "description": "Adds the ability to give blocks multiple voxels for collision and related things",
+  "description": "Adds the ability to give blocks multiple voxels for collision/outline, also fixes stairs' and fences' boxes",
   "authors": [
     "Slainlight",
     "KydZombie"
