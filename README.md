@@ -13,7 +13,7 @@ You can also implement `HasCollisionVoxelShape` by itself, to only give collisio
 
 ```java
 class ExampleBlock extends Block implements HasVoxelShape, HasCollisionVoxelShape {
-    public FenceBlockMixin(int id, Material material) {
+    public ExampleBlock(int id, Material material) {
         super(id, material);
     }
 
