@@ -2,6 +2,7 @@ package io.github.kydzombie.voxelshapes.mixin.server;
 
 import io.github.kydzombie.voxelshapes.api.HasCollisionVoxelShape;
 import io.github.kydzombie.voxelshapes.api.HasVoxelShape;
+import io.github.kydzombie.voxelshapes.api.VoxelShape;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -13,6 +14,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+
+import java.util.List;
 
 @Mixin(ServerPlayNetworkHandler.class)
 public abstract class ServerPlayNetworkHandlerMixin {
@@ -36,20 +39,28 @@ public abstract class ServerPlayNetworkHandlerMixin {
             for (int y = min.getY(); y <= max.getY(); y++) {
                 for (int z = min.getZ(); z <= max.getZ(); z++) {
                     Block block = world.getBlockState(x, y, z).getBlock();
-                    Box[] boxes;
+                    List<Box> boxes = null;
 
-                    if (block instanceof HasVoxelShape hasVoxelShape) {
-                        boxes = hasVoxelShape.getVoxelShape(world, x, y, z).getOffsetBoxes();
-                    } else if (block instanceof HasCollisionVoxelShape hasCollisionVoxelShape) {
-                        boxes = hasCollisionVoxelShape.getCollisionVoxelShape(world, x, y, z).getOffsetBoxes();
+                    if (block instanceof HasCollisionVoxelShape hasCollisionVoxelShape) {
+                        VoxelShape voxelShape = hasCollisionVoxelShape.getCollisionVoxelShape(world, x, y, z);
+                        if (voxelShape != null) {
+                            boxes = voxelShape.getOffsetBoxes();
+                        }
+                    } else if (block instanceof HasVoxelShape hasVoxelShape) {
+                        VoxelShape voxelShape = hasVoxelShape.getVoxelShape(world, x, y, z);
+                        if (voxelShape != null) {
+                            boxes = voxelShape.getOffsetBoxes();
+                        }
                     } else {
-                        boxes = new Box[]{block.getCollisionShape(world, x, y, z)};
+                        boxes = List.of(block.getCollisionShape(world, x, y, z));
                     }
 
-                    for (Box blockBoxPart : boxes) {
-                        if (blockBoxPart == null) continue;
-                        if (playerBox.intersects(blockBoxPart)) {
-                            collisionVerified = true;
+                    if (boxes != null) {
+                        for (Box blockBoxPart : boxes) {
+                            if (blockBoxPart == null) continue;
+                            if (playerBox.intersects(blockBoxPart)) {
+                                collisionVerified = true;
+                            }
                         }
                     }
                 }

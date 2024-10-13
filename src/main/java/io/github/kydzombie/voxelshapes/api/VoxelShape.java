@@ -1,33 +1,43 @@
 package io.github.kydzombie.voxelshapes.api;
 
 import io.github.kydzombie.voxelshapes.Line;
+import io.github.kydzombie.voxelshapes.impl.VoxelBox;
+import io.github.kydzombie.voxelshapes.impl.VoxelVec3d;
 import net.minecraft.util.math.Box;
-import net.modificationstation.stationapi.api.util.math.Vec3d;
+import net.minecraft.util.math.Vec3d;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class VoxelShape {
     private final VoxelData voxelData;
-    private final Vec3d offset;
+    private final VoxelVec3d offset;
 
-    public VoxelShape(VoxelData voxelData, Vec3d offset) {
+    protected VoxelShape(VoxelData voxelData, VoxelVec3d offset) {
         this.voxelData = voxelData;
         this.offset = offset;
     }
 
-    public Box[] getOffsetBoxes() {
-        return Arrays.stream(voxelData.getBoxes()).map((box) -> box.offset(offset.x, offset.y, offset.z)).toArray(Box[]::new);
+    public List<Box> getOffsetBoxes() {
+        return voxelData.getBoxes().stream().map((box) -> box.offset(offset.x(), offset.y(), offset.z())).toList();
     }
 
-    public Box[] getBoxes() {
+    public List<VoxelBox> getVoxelBoxes() {
+        return voxelData.getVoxelBoxes();
+    }
+
+    public List<Box> getBoxes() {
         return voxelData.getBoxes();
     }
 
-    public Line[] getLines() {
+    public List<Line> getLines() {
         return voxelData.getLines();
     }
 
-    public Vec3d getOffset() {
+    public VoxelVec3d getVoxelOffset() {
         return offset;
+    }
+
+    public Vec3d getOffset() {
+        return VoxelVec3d.devoxelify(offset);
     }
 }

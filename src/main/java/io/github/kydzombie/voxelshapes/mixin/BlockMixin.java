@@ -16,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 @Mixin(Block.class)
 public class BlockMixin {
@@ -24,11 +23,11 @@ public class BlockMixin {
     private void voxelshapes_addVoxelShapesToCollision(World world, int x, int y, int z, Box box, ArrayList<Box> boxes, CallbackInfo ci) {
         if (this instanceof HasCollisionVoxelShape hasCollisionVoxelShape) {
             VoxelShape collisionVoxelShape = hasCollisionVoxelShape.getCollisionVoxelShape(world, x, y, z);
-            if (collisionVoxelShape != null) boxes.addAll(Arrays.asList(collisionVoxelShape.getOffsetBoxes()));
+            if (collisionVoxelShape != null) boxes.addAll(collisionVoxelShape.getOffsetBoxes());
             ci.cancel();
         } else if (this instanceof HasVoxelShape hasVoxelShape) {
             VoxelShape voxelShape = hasVoxelShape.getVoxelShape(world, x, y, z);
-            if (voxelShape != null) boxes.addAll(Arrays.asList(voxelShape.getOffsetBoxes()));
+            if (voxelShape != null) boxes.addAll(voxelShape.getOffsetBoxes());
             ci.cancel();
         }
     }

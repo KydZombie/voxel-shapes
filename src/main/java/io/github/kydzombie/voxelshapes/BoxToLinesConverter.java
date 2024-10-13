@@ -1,24 +1,29 @@
 package io.github.kydzombie.voxelshapes;
 
+import io.github.kydzombie.voxelshapes.impl.VoxelBox;
+import io.github.kydzombie.voxelshapes.impl.VoxelVec3d;
 import net.minecraft.util.math.Box;
-import net.modificationstation.stationapi.api.util.math.Vec3d;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.*;
 
 public class BoxToLinesConverter {
     public static List<Line> convertBoxesToLines(Box[] boxes, Vec3d center) {
+        return convertBoxesToLines(VoxelBox.voxelify(boxes), VoxelVec3d.voxelify(center));
+    }
+    public static List<Line> convertBoxesToLines(VoxelBox[] boxes, VoxelVec3d center) {
         List<Line> lines = new ArrayList<>();
 
         // TODO: Make lines not go out from a center, and instead out from each box.
-        for (Box box : boxes) {
-            Vec3d corner1 = new Vec3d(box.minX, box.minY, box.minZ);
-            Vec3d corner2 = new Vec3d(box.minX, box.minY, box.maxZ);
-            Vec3d corner3 = new Vec3d(box.minX, box.maxY, box.minZ);
-            Vec3d corner4 = new Vec3d(box.minX, box.maxY, box.maxZ);
-            Vec3d corner5 = new Vec3d(box.maxX, box.minY, box.minZ);
-            Vec3d corner6 = new Vec3d(box.maxX, box.minY, box.maxZ);
-            Vec3d corner7 = new Vec3d(box.maxX, box.maxY, box.minZ);
-            Vec3d corner8 = new Vec3d(box.maxX, box.maxY, box.maxZ);
+        for (VoxelBox box : boxes) {
+            VoxelVec3d corner1 = new VoxelVec3d(box.minX(), box.minY(), box.minZ());
+            VoxelVec3d corner2 = new VoxelVec3d(box.minX(), box.minY(), box.maxZ());
+            VoxelVec3d corner3 = new VoxelVec3d(box.minX(), box.maxY(), box.minZ());
+            VoxelVec3d corner4 = new VoxelVec3d(box.minX(), box.maxY(), box.maxZ());
+            VoxelVec3d corner5 = new VoxelVec3d(box.maxX(), box.minY(), box.minZ());
+            VoxelVec3d corner6 = new VoxelVec3d(box.maxX(), box.minY(), box.maxZ());
+            VoxelVec3d corner7 = new VoxelVec3d(box.maxX(), box.maxY(), box.minZ());
+            VoxelVec3d corner8 = new VoxelVec3d(box.maxX(), box.maxY(), box.maxZ());
 
             lines.add(new Line(corner1, corner2));
             lines.add(new Line(corner1, corner3));
@@ -38,11 +43,8 @@ public class BoxToLinesConverter {
         removeCoincidingEdges(lines);
 
         // Expand lines
-        for (Line line : lines) {
-            line.expand(0.002, center);
-        }
 
-        return lines;
+        return lines.stream().map(line -> line.expand(0.002, center)).toList();
     }
 
     private static void removeCoincidingEdges(List<Line> lines) {
