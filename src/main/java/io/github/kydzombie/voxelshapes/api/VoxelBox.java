@@ -1,4 +1,4 @@
-package io.github.kydzombie.voxelshapes.impl;
+package io.github.kydzombie.voxelshapes.api;
 
 import net.minecraft.util.math.Box;
 

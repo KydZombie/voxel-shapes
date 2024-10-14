@@ -3,7 +3,7 @@ package io.github.kydzombie.voxelshapes.mixin.block;
 import io.github.kydzombie.voxelshapes.api.HasVoxelShape;
 import io.github.kydzombie.voxelshapes.api.VoxelData;
 import io.github.kydzombie.voxelshapes.api.VoxelShape;
-import io.github.kydzombie.voxelshapes.impl.VoxelBox;
+import io.github.kydzombie.voxelshapes.api.VoxelBox;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;

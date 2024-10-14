@@ -1,9 +1,6 @@
 package io.github.kydzombie.voxelshapes.api;
 
-import io.github.kydzombie.voxelshapes.BoxToLinesConverter;
-import io.github.kydzombie.voxelshapes.Line;
-import io.github.kydzombie.voxelshapes.impl.VoxelBox;
-import io.github.kydzombie.voxelshapes.impl.VoxelVec3d;
+import io.github.kydzombie.voxelshapes.impl.BoxToLinesConverter;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 

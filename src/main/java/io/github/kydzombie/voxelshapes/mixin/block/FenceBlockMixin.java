@@ -4,7 +4,7 @@ import io.github.kydzombie.voxelshapes.api.HasCollisionVoxelShape;
 import io.github.kydzombie.voxelshapes.api.HasVoxelShape;
 import io.github.kydzombie.voxelshapes.api.VoxelData;
 import io.github.kydzombie.voxelshapes.api.VoxelShape;
-import io.github.kydzombie.voxelshapes.impl.VoxelBox;
+import io.github.kydzombie.voxelshapes.api.VoxelBox;
 import net.minecraft.block.Block;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.material.Material;

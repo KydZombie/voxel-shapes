@@ -1,6 +1,5 @@
-package io.github.kydzombie.voxelshapes;
+package io.github.kydzombie.voxelshapes.api;
 
-import io.github.kydzombie.voxelshapes.impl.VoxelVec3d;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
@@ -15,6 +14,22 @@ public record Line(VoxelVec3d start, VoxelVec3d end) {
         VoxelVec3d direction = point.subtract(center).normalize();
         VoxelVec3d displacement = direction.multiply(distance);
         return point.add(displacement);
+    }
+
+    public VoxelVec3d getVoxelMidpoint() {
+        return new VoxelVec3d(
+                (start.x() + end.x()) / 2,
+                (start.y() + end.y()) / 2,
+                (start.z() + end.z()) / 2
+        );
+    }
+
+    public Vec3d getMidpoint() {
+        return Vec3d.create(
+                (start.x() + end.x()) / 2,
+                (start.y() + end.y()) / 2,
+                (start.z() + end.z()) / 2
+        );
     }
 
     public Line expand(double d, VoxelVec3d center) {

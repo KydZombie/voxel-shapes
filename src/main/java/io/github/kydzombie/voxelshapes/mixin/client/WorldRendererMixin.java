@@ -1,9 +1,9 @@
 package io.github.kydzombie.voxelshapes.mixin.client;
 
-import io.github.kydzombie.voxelshapes.Line;
+import io.github.kydzombie.voxelshapes.api.Line;
 import io.github.kydzombie.voxelshapes.api.HasVoxelShape;
 import io.github.kydzombie.voxelshapes.api.VoxelShape;
-import io.github.kydzombie.voxelshapes.impl.VoxelVec3d;
+import io.github.kydzombie.voxelshapes.api.VoxelVec3d;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.WorldRenderer;

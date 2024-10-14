@@ -1,4 +1,4 @@
-package io.github.kydzombie.voxelshapes.impl;
+package io.github.kydzombie.voxelshapes.api;
 
 import net.minecraft.util.math.Vec3d;
 
@@ -49,6 +49,22 @@ public record VoxelVec3d(double x, double y, double z) {
 
     public VoxelVec3d multiply(double scalar) {
         return new VoxelVec3d(x * scalar, y * scalar, z * scalar);
+    }
+
+    double distanceTo(VoxelVec3d other) {
+        return Math.sqrt(
+                Math.pow(x - other.x, 2) +
+                Math.pow(y - other.y, 2) +
+                Math.pow(z - other.z, 2)
+        );
+    }
+
+    double distanceTo(Vec3d other) {
+        return Math.sqrt(
+                Math.pow(x - other.x, 2) +
+                Math.pow(y - other.y, 2) +
+                Math.pow(z - other.z, 2)
+        );
     }
 
     // Yes, this was ripped directly from StationAPI.
