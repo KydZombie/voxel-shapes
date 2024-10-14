@@ -51,7 +51,7 @@ public record VoxelVec3d(double x, double y, double z) {
         return new VoxelVec3d(x * scalar, y * scalar, z * scalar);
     }
 
-    double distanceTo(VoxelVec3d other) {
+    public double distanceTo(VoxelVec3d other) {
         return Math.sqrt(
                 Math.pow(x - other.x, 2) +
                 Math.pow(y - other.y, 2) +
@@ -59,7 +59,7 @@ public record VoxelVec3d(double x, double y, double z) {
         );
     }
 
-    double distanceTo(Vec3d other) {
+    public double distanceTo(Vec3d other) {
         return Math.sqrt(
                 Math.pow(x - other.x, 2) +
                 Math.pow(y - other.y, 2) +
