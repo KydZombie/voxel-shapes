@@ -11,6 +11,7 @@ public class BoxToLinesConverter {
     public static List<Line> convertBoxesToLines(Box[] boxes, Vec3d center) {
         return convertBoxesToLines(VoxelBox.voxelify(boxes), VoxelVec3d.voxelify(center));
     }
+
     public static List<Line> convertBoxesToLines(VoxelBox[] boxes, VoxelVec3d center) {
         List<Line> lines = new ArrayList<>();
 

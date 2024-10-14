@@ -19,25 +19,29 @@ dependencies {
 ```
 
 ```java
+// Demo of a block made of two vertical half slabs
 class ExampleBlock extends Block implements HasVoxelShape, HasCollisionVoxelShape {
+    // Not required but more efficient to
+    // store this here than create it
+    // each time getVoxelShape is called.
+    private static final VoxelData VOXEL_DATA = new VoxelData(
+            Box.create(0, 0, 0, 0.50, 1.0, 1.0), 
+            Box.create(0.5, 0, 0, 1.0, 1.0, 1.0)
+    );
+    
     public ExampleBlock(int id, Material material) {
         super(id, material);
     }
 
     @Override
-    public Box[] getVoxelShape(World world, int x, int y, int z) {
-        // Create one orientation of the stair
-        // You could check the blockstate/meta here with world to chnage based off the block
-        // Demo of a block made of two vertical half slabs
-        Box[] boxes = new Box[2];
-        boxes[0] = Box.create(x, y, z, x + 0.5F, y + 1.F, z + 1.F);
-        boxes[1] = Box.create(x + 0.5F, y, z, x + 1.F, y + 1.F, z + 1.F);
-        return boxes;
+    public @Nullable VoxelShape getVoxelShape(World world, int x, int y, int z) {
+        // You could check the blockstate/meta here with world to change based off the block
+        return voxelData.withOffset(x, y, z);
     }
 
-    public Box[] getCollisionVoxelShape(World world, int x, int y, int z) {
+    public @Nullable VoxelShape getCollisionVoxelShape(World world, int x, int y, int z) {
         // Example of giving this block no collision
-        return new Box[0];
+        return null;
     }
 }
 ```

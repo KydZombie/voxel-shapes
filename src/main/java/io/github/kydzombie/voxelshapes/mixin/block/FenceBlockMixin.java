@@ -15,10 +15,6 @@ import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(FenceBlock.class)
 abstract class FenceBlockMixin extends Block implements HasVoxelShape, HasCollisionVoxelShape {
-    public FenceBlockMixin(int id, Material material) {
-        super(id, material);
-    }
-
     @Unique
     private static final VoxelBox voxelshapes_BASE_VOXEL_DATA = new VoxelBox(0.375F, 0, 0.375F, 0.625F, 1.F, 0.625F);
     @Unique
@@ -29,13 +25,11 @@ abstract class FenceBlockMixin extends Block implements HasVoxelShape, HasCollis
     private static final VoxelBox voxelshapes_BOX_NEG_Z = new VoxelBox(0.375F, 0, 0, 0.625F, 1.F, 0.375F);
     @Unique
     private static final VoxelBox voxelshapes_BOX_POS_Z = new VoxelBox(0.375F, 0, 0.625F, 0.625F, 1.F, 1.F);
-
     @Unique
     private static final VoxelBox voxelshapes_COLLISION_MODIFIER = new VoxelBox(0, 0, 0, 0, 0.5, 0);
 
     @Unique
     private static final VoxelData[] voxelshapes_VOXEL_DATUM = new VoxelData[16];
-
     @Unique
     private static final VoxelData[] voxelshapes_COLLISION_DATUM = new VoxelData[16];
 
@@ -64,6 +58,10 @@ abstract class FenceBlockMixin extends Block implements HasVoxelShape, HasCollis
             voxelshapes_VOXEL_DATUM[i] = voxelData.preCache();
             voxelshapes_COLLISION_DATUM[i] = collisionData;
         }
+    }
+
+    public FenceBlockMixin(int id, Material material) {
+        super(id, material);
     }
 
     @Unique

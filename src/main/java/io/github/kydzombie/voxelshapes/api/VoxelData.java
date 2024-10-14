@@ -7,8 +7,6 @@ import io.github.kydzombie.voxelshapes.impl.VoxelVec3d;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class VoxelData {

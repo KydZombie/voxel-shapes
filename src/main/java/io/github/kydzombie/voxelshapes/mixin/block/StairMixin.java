@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(StairsBlock.class)
 public class StairMixin implements HasVoxelShape {
-
     @Unique
     private static final VoxelData voxelshapes_BASE_VOXEL_DATA = new VoxelData(new VoxelBox(0, 0, 0, 1, 0.5, 1));
     @Unique

@@ -7,19 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record Line(VoxelVec3d start, VoxelVec3d end) {
-
     public Line(Vec3d start, Vec3d end) {
         this(VoxelVec3d.voxelify(start), VoxelVec3d.voxelify(end));
-    }
-
-    public Line expand(double d, VoxelVec3d center) {
-        return new Line(movePointAwayFromCenter(start, center, d), movePointAwayFromCenter(end, center, d));
     }
 
     private static VoxelVec3d movePointAwayFromCenter(VoxelVec3d point, VoxelVec3d center, double distance) {
         VoxelVec3d direction = point.subtract(center).normalize();
         VoxelVec3d displacement = direction.multiply(distance);
         return point.add(displacement);
+    }
+
+    public Line expand(double d, VoxelVec3d center) {
+        return new Line(movePointAwayFromCenter(start, center, d), movePointAwayFromCenter(end, center, d));
     }
 
     public boolean coincidesWith(Line other) {
