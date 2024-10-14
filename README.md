@@ -24,10 +24,11 @@ class ExampleBlock extends Block implements HasVoxelShape, HasCollisionVoxelShap
     // Not required but more efficient to
     // store this here than create it
     // each time getVoxelShape is called.
+    // preCache() is also optional but recommended when possible.
     private static final VoxelData VOXEL_DATA = new VoxelData(
-            Box.create(0, 0, 0, 0.50, 1.0, 1.0), 
+            Box.create(0, 0, 0, 0.5, 1.0, 1.0), 
             Box.create(0.5, 0, 0, 1.0, 1.0, 1.0)
-    );
+    ).preCache();
     
     public ExampleBlock(int id, Material material) {
         super(id, material);
